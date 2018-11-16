@@ -286,12 +286,12 @@ exports.createArchiveJob = function(UserIdentity, Policy, Job, ctx) {
                 jobParams.username = login
                 if (policyInstance) {
                     jobParams.autoArchive = (autoArchive in policyInstance) ? policyInstance.autoArchive : false
-                    jobParams.tapeCopies = (tapeCopies in policyInstance) ? policyInstance.tapeCopies : "one"
+                    jobParams.tapeRedundancy = (tapeRedundancy in policyInstance) ? policyInstance.tapeRedundancy : "low"
                 } else {
                     console.log("No policy settings found for ownerGroup", instance.ownerGroup)
                     console.log("Assuming default values")
                     jobParams.autoArchive = false
-                    jobParams.tapeCopies = "one"
+                    jobParams.tapeRedundancy = "low"
                 }
                 var body = {
                     emailJobInitiator: email,

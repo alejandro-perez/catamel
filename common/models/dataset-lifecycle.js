@@ -45,7 +45,14 @@ module.exports = function(Datasetlifecycle) {
             }
         }
         // add ownerGroup field from linked Datasets
-        utils.addOwnerGroup(ctx, next)
+        utils.addOwnerGroup(ctx, next);
+    })
+
+    Datasetlifecycle.observe('after save', (ctx, next) => {
+    // TODO add here a hook to check the relevant policy record for "autoArchive"
+    // if this is "true" then create a new job instance to archive the dataset.  
+    // do NOT override the CLI parameter for autoArchive...
+    
     })
 
     Datasetlifecycle.isValid = function(instance, next) {
