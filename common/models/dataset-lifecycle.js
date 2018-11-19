@@ -52,8 +52,27 @@ module.exports = function(Datasetlifecycle) {
     // TODO add here a hook to check the relevant policy record for "autoArchive"
     // if this is "true" then create a new job instance to archive the dataset.  
     // do NOT override the CLI parameter for autoArchive...
-    
-    })
+
+    // if ingest CLI already auto archive return
+        var Policy = app.models.Policy;
+        Policy.findOne({
+                    where: {
+                        ownerGroup: ctx.instance.ownerGroup
+                    }
+                },
+                function(err, policyInstance) {
+                if (!policyInstance || err) {
+                    console.log("Error when looking for Policy of pgroup ", ctx.instance.ownerGroup, err)
+                } 
+                else {
+                    if (policyInstance && policyInstance.autoArchive  ) {
+                        // create auto archive job
+                        
+                        utils.createArchiveJob(policyInstance, ctx);
+                    }
+                }
+        });
+    });
 
     Datasetlifecycle.isValid = function(instance, next) {
         var ds = new Datasetlifecycle(instance)

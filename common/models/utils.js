@@ -240,7 +240,7 @@ exports.handleOwnerGroups = function(ctx, next) {
 }
 
 
-exports.createArchiveJob = function(UserIdentity, Policy, Job, ctx) {
+exports.createArchiveJob = function(Policy, ctx) {
     var instance = ctx.instance
     if (!instance) {
         instance = ctx.currentInstance
@@ -252,17 +252,14 @@ exports.createArchiveJob = function(UserIdentity, Policy, Job, ctx) {
 
     console.log("options, userid:", ctx.options, userId)
     //const user = userId ? 'user#' + userId : '<anonymous>';
+    var Job = app.models.Job;
+    var UserIdentity = app.models.UserIdentity;
     UserIdentity.findOne({
         where: {
             userId: userId
         }
     }, function(err, user) {
         console.log("UserIdentity Instance:", user)
-        // TODO: get it from User models
-        // TODO get proper emails in case of unctional accounts
-        // TODO remove console.log messages
-        // TODO add test cases
-        // TODO add creationTime (should not be needed any more)
         var email
         var login
         if (user && user.profile) {
