@@ -1,0 +1,10 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<identities>
+    <identity>
+        <display-name>alice@test1.org</display-name>
+        <user>alice</user>
+        <password>alicepwd</password>
+        <realm>test1.org</realm>
+    </identity>
+</identities>
+
