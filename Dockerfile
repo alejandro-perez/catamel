@@ -11,6 +11,8 @@ RUN set -x \
     && apt-get -y install moonshot-ui moonshot-gss-eap-noshib moonshot-trust-router freeradius mongodb-org \
                           apache2 libapache2-mod-auth-gssapi
 RUN echo 'alice@test1.org         Cleartext-Password := "alicepwd"' >> /etc/freeradius/users \
+    && echo 'bob@test1.org         Cleartext-Password := "bobpwd"' >> /etc/freeradius/users \
+    && echo 'carl@test1.org         Cleartext-Password := "carlpwd"' >> /etc/freeradius/users \
     && ln -s /etc/freeradius/sites-available/channel_bindings /etc/freeradius/sites-enabled/ \
     && echo 'realm gss-eap { \n\
             type = "UDP" \n\
@@ -38,6 +40,4 @@ RUN set -x \
 CMD freeradius \
     && /etc/init.d/apache2 start \
     && /usr/bin/mongod --config /etc/mongod.conf --fork \
-    && echo "To get a token with moonshot execute the following:" \
-    && echo '  docker exec -ti '$(hostname)' dbus-launch curl --negotiate -u ":" http://localhost/auth/moonshot/callback' \
     && node .
