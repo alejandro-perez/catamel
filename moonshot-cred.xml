@@ -6,5 +6,17 @@
         <password>alicepwd</password>
         <realm>test1.org</realm>
     </identity>
+    <identity>
+        <display-name>bob@test1.org</display-name>
+        <user>bob</user>
+        <password>bobpwd</password>
+        <realm>test1.org</realm>
+    </identity>
+    <identity>
+        <display-name>carl@test1.org</display-name>
+        <user>carl</user>
+        <password>carlpwd</password>
+        <realm>test1.org</realm>
+    </identity>
 </identities>
 
