@@ -31,7 +31,6 @@ WORKDIR workdir
 RUN set -x \
     && cp 000-default.conf /etc/apache2/sites-enabled \
     && npm install \
-    && npm install https://github.com/janetuk/loopback-passport-trusted-headers.git \
     && cd server \
     && cp datasources.json-sample datasources.json \
     && cp providers.json-sample providers.json \
