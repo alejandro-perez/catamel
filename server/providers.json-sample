@@ -8,5 +8,19 @@
         "successRedirect": "/auth/account",
         "failureRedirect": "/local",
         "failureFlash": true
+    },
+    "moonshot": {
+        "provider": "moonshot",
+        "authScheme": "trusted-header",
+        "module": "loopback-passport-trusted-header",
+        "authPath": "/auth/moonshot",
+        "callbackPath": "/auth/moonshot/callback",
+        "authOptions": {
+          "header_name": "proxy-remote-user"
+        },
+        "passReqToCallback": true,
+        "session": true,
+        "json": true,
+        "autoLogin": true
     }
 }
