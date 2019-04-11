@@ -3,7 +3,7 @@ FROM node:10
 RUN apt-get -y update
 RUN apt-get -y install curl sudo gnupg
 RUN set -x \
-    && echo "deb http://cdi-master.ci.ti.ja.net/repo-moonshot/debian-moonshot/ stretch main" > /etc/apt/sources.list.d/moonshot.list \
+    && echo "deb http://repository.project-moonshot.org/debian-moonshot/ stretch main" > /etc/apt/sources.list.d/moonshot.list \
     && curl "http://repository.project-moonshot.org/debian-moonshot/key.gpg" | apt-key add - \
     && apt-key adv --keyserver hkp://keyserver.ubuntu.com:80 --recv 9DA31620334BD75D9DCB49F368818C72E52529D4 \
     && echo "deb http://repo.mongodb.org/apt/debian stretch/mongodb-org/4.0 main" > /etc/apt/sources.list.d/mongodb.list \
