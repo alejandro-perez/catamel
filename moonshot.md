@@ -12,47 +12,35 @@ You will need to clone that repository:
 git clone https://github.com/alejandro-perez/catamel.git
 ```
 
-And move to the `moonshot` branch
+And move to the `moonshot_and_saml` branch
 ```
-git checkout moonshot
+git checkout moonshot_and_saml
 ```
-We have made very few changes to allow Moonshot authentications with `catamel`. Namely we have:
+We have made very few changes to allow Moonshot and SAML authentications with `catamel`. Namely we have:
 * Added dependency to the new `loopback-passport-trusted-header` strategy (https://github.com/janetuk/loopback-passport-trusted-header).
 * Defined a new sample `moonshot` provider configuration in `providers.json-sample`, using the aforementioned strategy.
+* Defined a new sample `shibsp` provider configuration in `providers.json-sample`, using the aforementioned strategy.
 
 The rest of the changes are additions to allow the Docker-based demonstrator (i.e. the Dockerfile, a sample moonshot credential, and an apache configuration file to set up the Proxy and authentication module).
 
-## Build the docker image
-The `moonshot` branch contains a Dockerfile that creates a all-in-one Docker image, including `mongodb`, `Apache`, `moonshot`, `freeradius`, etc.
+## Build and run the docker-compose environment
+The `moonshot_and_saml` branch contains a `docker-compose.yml` that creates a all-in-one demonstrator environment, including `mongodb`, `Apache`, `moonshot`, `freeradius`, `shibboleth`, etc.
 
-To build the image execute the following from the repository root.
+To build the compose environment execute the following from the repository root.
 ```
-docker build . -t catamel-moonshot-demo
-```
-
-## Run the docker image
-Once the docker image has been built, you can run it as many times as you want. Every run will start from scratch (ie. empty database, etc).
-
-To run the docker image execute the following command:
-```
-docker run -ti --rm --name catamel-moonshot-demo catamel-moonshot-demo
+docker-compose up --build
 ```
 
 That will start all the background services (ie. mongodb, freeradius...) and the node.js application, keeping the latter on the foreground.
 
 ## Performing Moonshot authentications
-Now, you are prepared to perform a moonshot-based authentication. For testing it, you need to enter into the container.
-For doing so, execute the following command. The `dbus-launch bash` ensures there will be a DBUS environment for the Moonshot Text UI to work.
+Now, you are prepared to perform a moonshot-based authentication. For testing it, you need a moonshot client. The easiest way of having access to one is using the `catamel` service within the docker compose. For doing so, execute the following command.
 
 ```
-docker exec -ti catamel-moonshot-demo dbus-launch bash
+docker-compose exec catamel dbus-launch curl --negotiate -u ":" http://localhost/auth/moonshot/callback
 ```
 
-Once inside the container, we are ready to execute our first Moonshot-based authentication and bootstrap an access token:
-```
-curl --negotiate -u ":" http://localhost/auth/moonshot/callback
-```
-That will trigger the Moonshot TXT ID selector, since there is not any identity associated for the requested service yet. Use the `<Import>` button on the right side to import the `moonshot-cred.xml` file located on the same folder. Then, choose one of the three available identities, and send it.
+That will trigger the Moonshot TXT ID selector, since there is not any identity associated for the requested service yet. Use the `<Import>` button on the right side to import the `moonshot-cred.xml` file located on the `/workdir` folder. Then, choose one of the three available identities, and send it.
 
 It will prompt you again, since you need to accept the IDP's server certificate. Select `<Confirm>`.
 
@@ -67,4 +55,13 @@ curl "http://localhost/api/v3/Users/userInfos?access_token=$TOKEN"
 ```
 Where `$TOKEN` is the value of the `access_token` JSON field.
 
+## Performing SAML authentications
+To perform SAML authentications you need to make sure that the computer where you will run the web browser contains an entry in the `etc/hosts` file for `idptestbed` pointing to localhost:
+```
+127.0.0.1   idptestbed
+```
+This is required because of the way the shibboleth services are built in the Compose environment. This would be different in a real deployment as actual DNS names would be used.
 
+Open your browser and go to `https://idptestbed/auth/shibsp/callback`. Use `student1` or `staff1` as username, and `password` as password.
+
+Once authenticated, you should get a JSON response similar to the one for Moonshot above.
