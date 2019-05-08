@@ -22,5 +22,19 @@
         "session": true,
         "json": true,
         "autoLogin": true
+    },
+    "shibsp": {
+        "provider": "shibsp",
+        "authScheme": "trusted-header",
+        "module": "loopback-passport-trusted-header",
+        "authPath": "/auth/shibsp",
+        "callbackPath": "/auth/shibsp/callback",
+        "authOptions": {
+          "header_name": "proxy-remote-user"
+        },
+        "passReqToCallback": true,
+        "session": true,
+        "json": true,
+        "autoLogin": true
     }
 }
