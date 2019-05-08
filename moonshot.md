@@ -51,7 +51,7 @@ You will get something similar to this:
 
 To check that the obtained access token is indeed valid:
 ```
-curl "http://localhost/api/v3/Users/userInfos?access_token=$TOKEN"
+docker-compose exec catamel curl "http://localhost/api/v3/Users/userInfos?access_token=$TOKEN"
 ```
 Where `$TOKEN` is the value of the `access_token` JSON field.
 
@@ -65,3 +65,22 @@ This is required because of the way the shibboleth services are built in the Com
 Open your browser and go to `https://idptestbed/auth/shibsp/callback`. Use `student1` or `staff1` as username, and `password` as password.
 
 Once authenticated, you should get a JSON response similar to the one for Moonshot above.
+
+# Mapping federated accounts into local accounts
+The `loopback-passport-trusted-header` strategy allows a way for mapping the name obtained from the trusted headers into some meaningful local account.
+For that purpose, you need to customise your `server.js` file adding something similar to the following:
+```
+// Configure passport strategies for third party auth providers
+for (var s in config) {
+    var c = config[s];
+    c.session = c.session !== false;
+    var strategy = passportConfigurator.configureProvider(s, c);
+    if (s == 'shibsp') {
+        strategy._mapUserName = function(username) {
+            var localname = "local-" + username;
+            console.log("Mapping username [%s] into [%s]", username, localname);
+            return localname;
+        }
+    }
+}
+```
