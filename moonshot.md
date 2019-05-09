@@ -37,7 +37,7 @@ That will start all the background services (ie. mongodb, freeradius...) and the
 Now, you are prepared to perform a moonshot-based authentication. For testing it, you need a moonshot client. The easiest way of having access to one is using the `catamel` service within the docker compose. For doing so, execute the following command.
 
 ```
-docker-compose exec catamel dbus-launch curl --insecure --negotiate -u ":" https://localhost/auth/moonshot/callback
+docker-compose exec catamel dbus-launch curl --insecure --negotiate -u ":" https://catamelmoonshotdemo/auth/moonshot/callback
 ```
 
 That will trigger the Moonshot TXT ID selector, since there is not any identity associated for the requested service yet. Use the `<Import>` button on the right side to import the `moonshot-cred.xml` file located on the `/workdir` folder. Then, choose one of the three available identities, and send it.
