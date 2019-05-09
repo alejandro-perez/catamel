@@ -20,7 +20,7 @@
     -->
 
     <!-- The ApplicationDefaults element is where most of Shibboleth's SAML bits are defined. -->
-    <ApplicationDefaults entityID="https://sp.idptestbed/shibboleth"
+    <ApplicationDefaults entityID="https://catamelmoonshotdemo/shibboleth"
                          REMOTE_USER="eppn uid persistent-id targeted-id">
 
         <!--
