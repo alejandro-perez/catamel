@@ -28,8 +28,14 @@ RUN echo 'alice@test1.org         Cleartext-Password := "alicepwd"' >> /etc/free
              update outer.session-state { \n\
                User-Name := &User-Name \n\
              }" /etc/freeradius/sites-enabled/inner-tunnel
+RUN a2enmod ssl
+RUN apt-get install -y libapache2-mod-shib2
+
 COPY . workdir
 WORKDIR workdir
+COPY sp/etc-httpd/ /etc/httpd/
+COPY sp/etc-shibboleth /etc/shibboleth/
+
 RUN set -x \
     && cp 000-default.conf /etc/apache2/sites-enabled \
     && npm install \
@@ -39,5 +45,6 @@ RUN set -x \
     && cp config.local.js-sample config.local.js
 CMD freeradius \
     && /etc/init.d/apache2 start \
+    && /etc/init.d/shibd start \
     && /usr/bin/mongod --config /etc/mongod.conf --fork \
     && node .

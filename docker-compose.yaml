@@ -10,9 +10,6 @@ services:
      - JETTY_BACKCHANNEL_SSL_KEYSTORE_PASSWORD=password
     ports:
      - "4443:4443"
-     - "8443:8443"
-    networks:
-     - back
     secrets:
      - source: idp_backchannel
      - source: idp_browser
@@ -21,28 +18,18 @@ services:
      - source: idp_sealer
   ldap:
     build: ./ldap/
-    networks:
-     - back
-
-  sp:
-    build: ./sp/
-    networks:
-     - back
-    secrets:
-     - source: sp_key
-    ports:
-     - "80:80"
-     - "443:443"
 
   catamel:
     build: .
     hostname: catamel
     networks:
-     - back
-
-networks:
-  back:
-    driver: bridge
+      default:
+        aliases:
+          - idptestbed
+    ports:
+     - "443:443"
+    secrets:
+     - source: sp_key
 
 secrets:
   idp_backchannel:
