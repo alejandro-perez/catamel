@@ -1,46 +1,12 @@
 version: "3.1"
 services:
-  idp:
-    build: ./idp/
-    depends_on:
-     - ldap
-    environment:
-     - JETTY_MAX_HEAP=64m
-     - JETTY_BROWSER_SSL_KEYSTORE_PASSWORD=password
-     - JETTY_BACKCHANNEL_SSL_KEYSTORE_PASSWORD=password
-    ports:
-     - "4443:4443"
-    secrets:
-     - source: idp_backchannel
-     - source: idp_browser
-     - source: idp_encryption
-     - source: idp_signing
-     - source: idp_sealer
-  ldap:
-    build: ./ldap/
-
   catamel:
     build: .
-    hostname: catamel
-    networks:
-      default:
-        aliases:
-          - catamelmoonshotdemo
+    hostname: catamelmoonshotdemo
     ports:
      - "443:443"
     secrets:
      - source: sp_key
-
 secrets:
-  idp_backchannel:
-    file: ./secrets/idp/idp-backchannel.p12
-  idp_browser:
-    file: ./secrets/idp/idp-browser.p12
-  idp_encryption:
-    file: ./secrets/idp/idp-encryption.key
-  idp_signing:
-    file: ./secrets/idp/idp-signing.key
-  idp_sealer:
-    file: ./secrets/idp/sealer.jks
   sp_key:
     file: ./secrets/sp/sp-key.pem
