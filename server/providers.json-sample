@@ -34,7 +34,23 @@
         },
         "passReqToCallback": true,
         "session": true,
+        "successRedirect": "/explorer",
         "json": true,
+        "autoLogin": true
+    },
+    "shibspsession": {
+        "provider": "shibspsession",
+        "authScheme": "trusted-header",
+        "module": "loopback-passport-trusted-header",
+        "authPath": "/auth/shibspsession",
+        "callbackPath": "/auth/shibspsession/callback",
+        "authOptions": {
+          "header_name": "proxy-remote-user"
+        },
+        "passReqToCallback": true,
+        "session": true,
+        "successRedirect": "/explorer",
+        "json": false,
         "autoLogin": true
     }
 }
