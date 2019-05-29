@@ -7,6 +7,15 @@ services:
      - "443:443"
     secrets:
      - source: sp_key
+  satosa:
+    image: satosa/satosa
+    volumes:
+      - ./satosaconf/:/root/satosa/
+    environment:
+      DATA_DIR: /root/satosa
+    ports:
+     - "8000:8000"
+
 secrets:
   sp_key:
     file: ./secrets/sp/sp-key.pem

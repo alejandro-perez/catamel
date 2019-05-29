@@ -33,7 +33,7 @@
           "header_name": "proxy-remote-user"
         },
         "passReqToCallback": true,
-        "session": true,
+        "session": false,
         "successRedirect": "/explorer",
         "json": true,
         "autoLogin": true
