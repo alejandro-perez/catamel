@@ -63,6 +63,7 @@ class DuoMapping(ResponseMicroService):
     def __init__(self, config, *args, **kwargs):
         super().__init__(*args, **kwargs)
         self.attribute_name = config["attribute_name"]
+        self.replace_attribute = config.get("out_attribute_name", self.attribute_name)
         self.url = config["url"]
         self.authtoken = config["authtoken"]
 
@@ -78,11 +79,11 @@ class DuoMapping(ResponseMicroService):
         return response["localname"]
 
     def process(self, context, data):
-        if self.attribute_name in data.attributes:
-            try:
-                new_value = self.perform_request(data.attributes[self.attribute_name])
-            except Exception as ex:
-                raise SATOSAAuthenticationError(context.state, "DUO mapping failed!")
-            data.attributes[self.attribute_name] = new_value
-        return super().process(context, data)
+        try:
+            oldvalue = data.attributes[self.attribute_name][0]
+            new_value = self.perform_request(oldvalue)
+            data.attributes[self.replace_attribute] = [new_value]
+            return super().process(context, data)
+        except Exception as ex:
+            raise SATOSAAuthenticationError(context.state, "DUO mapping failed!")
 

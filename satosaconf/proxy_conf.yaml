@@ -12,8 +12,7 @@ BACKEND_MODULES:
 FRONTEND_MODULES:
   - "plugins/frontends/saml2_frontend.yaml"
 MICRO_SERVICES:
-  - "plugins/microservices/static_attributes.yaml"
-  - "plugins/microservices/account_mapping.yaml"
+  - "plugins/microservices/duo_mapping.yaml"
 LOGGING:
   version: 1
   formatters:

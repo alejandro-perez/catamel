@@ -177,12 +177,5 @@ passportConfigurator.setupModels({
 for (var s in config) {
     var c = config[s];
     c.session = c.session !== false;
-    var strategy = passportConfigurator.configureProvider(s, c);
-    if (s == 'shibsp') {
-        strategy._mapUserName = function(username) {
-            var localname = "local-" + username;
-            console.log("Mapping username [%s] into [%s]", username, localname);
-            return localname;
-        }
-    }
+    passportConfigurator.configureProvider(s, c);
 }

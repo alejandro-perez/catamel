@@ -20,11 +20,14 @@ We have made very few changes to allow Moonshot and SAML authentications with `c
 * Added dependency to the new `loopback-passport-trusted-header` strategy (https://github.com/janetuk/loopback-passport-trusted-header).
 * Defined a new sample `moonshot` provider configuration in `providers.json-sample`, using the aforementioned strategy.
 * Defined a new sample `shibsp` provider configuration in `providers.json-sample`, using the aforementioned strategy.
+* Defined a new sample `shibspsession` provider configuration in `providers.json-sample`, using the aforementioned strategy.
 
 The rest of the changes are additions to allow the Docker-based demonstrator (i.e. the Dockerfile, a sample moonshot credential, and an apache configuration file to set up the Proxy and authentication module).
 
 ## Build and run the docker-compose environment
 The `moonshot_and_saml` branch contains a `docker-compose.yml` that creates a all-in-one demonstrator environment, including `mongodb`, `Apache`, `moonshot`, `freeradius`, `shibboleth SP`, etc.
+
+A precondition for building this environment is to create a user mapping dictionary for the "Fake DUO" service, that simulates the actual DUO service. For doing that rename the `fakeduo/users.py.sample` into `fakeduo/users.py` and edit the `USERS` dictionary appropriatedly.
 
 To build the compose environment execute the following from the repository root.
 ```
@@ -74,9 +77,9 @@ You'll get information about the user, similar to this:
 ```
 Note that the `@` symbol has been replaced with `#`. This is because the loopback-passport module uses the username to build an email address in the form `username@loopback.moonshot.com`, and it crashes when username already contains a `@`.
 ## Performing SAML authentications
-To perform SAML authentications you need to make sure that the computer contains an entry in the `etc/hosts` file for `catamelmoonshotdemo` pointing to localhost:
+To perform SAML authentications you need to make sure that the computer contains an entry in the `etc/hosts` file for `catamelmoonshotdemo` and `satosaproxy` pointing to localhost:
 ```
-127.0.0.1   catamelmoonshotdemo
+127.0.0.1   catamelmoonshotdemo satosaproxy
 ```
 This is required because that the URL registered in the SP's metadata and you need to trick your browser into going to localhost (where shibd is running) instead.
 
@@ -84,21 +87,3 @@ Open your browser and go to `https://catamelmoonshotdemo/auth/shibsp/callback`. 
 
 Once authenticated, you should get a JSON response similar to the one for Moonshot above.
 
-# Mapping federated accounts into local accounts
-The `loopback-passport-trusted-header` strategy allows a way for mapping the name obtained from the trusted headers into some meaningful local account.
-For that purpose, you need to customise your `server.js` file adding something similar to the following:
-```
-// Configure passport strategies for third party auth providers
-for (var s in config) {
-    var c = config[s];
-    c.session = c.session !== false;
-    var strategy = passportConfigurator.configureProvider(s, c);
-    if (s == 'shibsp') {
-        strategy._mapUserName = function(username) {
-            var localname = "local-" + username;
-            console.log("Mapping username [%s] into [%s]", username, localname);
-            return localname;
-        }
-    }
-}
-```
