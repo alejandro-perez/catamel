@@ -1,0 +1,6 @@
+module: satosa.micro_services.attribute_modifications.DuoMapping
+name: DuoMapping
+config:
+    attribute_name: givenname
+    url: 'http://fakeduo:5000/map'
+    authtoken: thisismysecuretoken2
