@@ -1,5 +1,5 @@
 USERS = {
-    "XXXXXXXX-XXXX-XXXX-XXXX-XXXXXXXXXXXX": "Local account X",
-    "YYYYYYYY-YYYY-YYYY-YYYY-YYYYYYYYYYYY": "Local account Y",
-    "ZZZZZZZZ-ZZZZ-ZZZZ-ZZZZ-ZZZZZZZZZZZZ": "Local account Z"
+    "XXXXXXXX-XXXX-XXXX-XXXX-XXXXXXXXXXXX@umbrellaid.org": "Local account X",
+    "YYYYYYYY-YYYY-YYYY-YYYY-YYYYYYYYYYYY@umbrellaid.org": "Local account Y",
+    "ZZZZZZZZ-ZZZZ-ZZZZ-ZZZZ-ZZZZZZZZZZZZ@umbrellaid.org": "Local account Z"
 }
