@@ -278,7 +278,8 @@
     </resolver:DataConnector>
 
 <resolver:DataConnector id="myHTTP" xsi:type="resolver:HTTP"
-        httpClientRef="shibboleth.NonCachingHttpClient">
+        httpClientRef="shibboleth.NonCachingHttpClient"
+        headerMapRef="AuthHeaders">
     <resolver:URLTemplate>
         <![CDATA[
           http://fakeduo:5000/map?username=$pathEscaper.escape($resolutionContext.principal)

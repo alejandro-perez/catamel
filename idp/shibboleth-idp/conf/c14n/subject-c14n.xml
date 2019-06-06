@@ -106,5 +106,7 @@
         <bean parent="shibboleth.Pair" p:first="^(.+)@example\.edu$" p:second="$1" />
         -->
     </util:list>
-    
+    <util:map id="AuthHeaders">
+        <entry key="Authorization" value="thisismysecuretoken2"/>
+    </util:map>
 </beans>
