@@ -15,7 +15,7 @@ services:
       DATA_DIR: /root/satosa
     ports:
      - "8000:8000"
-  idp:
+  idp.ccc.local:
     build: ./idp/
     depends_on:
      - ldap
