@@ -12,9 +12,9 @@ You will need to clone that repository:
 git clone https://github.com/alejandro-perez/catamel.git
 ```
 
-And switch to the `moonshot_and_saml` branch
+And switch to the `shib_aa` branch
 ```
-git checkout moonshot_and_saml
+git checkout shib_aa
 ```
 We have made very few changes to allow Moonshot and SAML authentications with `catamel`. Namely we have:
 * Added dependency to the new `loopback-passport-trusted-header` strategy (https://github.com/janetuk/loopback-passport-trusted-header).
@@ -25,7 +25,7 @@ We have made very few changes to allow Moonshot and SAML authentications with `c
 The rest of the changes are additions to allow the Docker-based demonstrator (i.e. the Dockerfile, a sample moonshot credential, and an apache configuration file to set up the Proxy and authentication module).
 
 ## Build and run the docker-compose environment
-The `moonshot_and_saml` branch contains a `docker-compose.yml` that creates a all-in-one demonstrator environment, including `mongodb`, `Apache`, `moonshot`, `freeradius`, `shibboleth SP`, etc.
+The `shib_aa` branch contains a `docker-compose.yml` that creates a all-in-one demonstrator environment, including `mongodb`, `Apache`, `moonshot`, `freeradius`, `shibboleth SP`, etc.
 
 A precondition for building this environment is to create a user mapping dictionary for the "Fake DUO" service, that simulates the actual DUO service. For doing that rename the `fakeduo/users.py.sample` into `fakeduo/users.py` and edit the `USERS` dictionary appropriatedly.
 
@@ -40,7 +40,7 @@ That will start all the background services (ie. mongodb, freeradius...) and the
 Now, you are prepared to perform a moonshot-based authentication. For testing it, you need a moonshot client. The easiest way of having access to one is using the `catamel` service within the docker compose. For doing so, execute the following command.
 
 ```
-docker-compose exec catamel dbus-launch curl --insecure --negotiate -u ":" https://catamelmoonshotdemo/auth/moonshot/callback
+docker-compose exec catamel curl --insecure --negotiate -u ":" https://catamelmoonshotdemo/auth/moonshot/callback
 ```
 
 That will trigger the Moonshot TXT ID selector, since there is not any identity associated for the requested service yet. Use the `<Import>` button on the right side to import the `moonshot-cred.xml` file located on the `/workdir` folder. Then, choose one of the three available identities, and send it.
